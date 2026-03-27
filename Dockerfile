@@ -1,31 +1,17 @@
-# choosing the base image as the build stage:
-FROM node:16-alpine AS build
+# Use official Python image
+FROM python:3.10-slim
 
-# choosing working directory for the application:
+# Set working directory
 WORKDIR /app
 
-# copying the package.json files and installing dependencies:
-COPY package*.json ./
-RUN npm install
-
-# copying the rest of application code:
+# Copy files
 COPY . .
 
-# building the application:
-RUN npm run build
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose Streamlit port
+EXPOSE 8501
 
-# second stage base image:
-FROM nginx:alpine
-
-# removing default nginx static files:
-RUN rm -rf /usr/share/nginx/html/*
-
-# copying build files from first stage:
-COPY --from=build /app/build /usr/share/nginx/html
-
-# exposing port:
-EXPOSE 80
-
-# starting nginx:
-CMD ["nginx", "-g", "daemon off;"] 
+# Run the app
+CMD ["streamlit", "run", "calculator.py", "--server.port=8501", "--server.address=0.0.0.0"] 
