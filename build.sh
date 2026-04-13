@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # Login to DockerHub
-echo "$DOCKER_PASS" | docker login -u "$DOCKER_USERNAME" --password-stdin
+echo "$DOCKER_PASS" | docker login -u rahul9786 --password-stdin
 
 # Stop & remove old container
-docker stop python-cals || true
-docker rm python-cals || true
+docker stop web_app || true
+docker rm web_app || true
 
 # Build image
-docker build -t calculator-app .
+docker build -t cal_app .
 
 # Run container
-docker run -d --name python-cals -p 8501:8501 calculator-app
+docker run -d --name web_app -p 8501:8501 cal_app
 
 # Tag image (FIXED)
-docker tag calculator-app rahul9786/calculator-py:latest
+docker tag cal_app rahul9786/calculator_webapp:latest
 
 # Push image
-docker push rahul9786/calculator-py:latest
+docker push rahul9786/calculator_webapp:latest
