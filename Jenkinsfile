@@ -3,17 +3,16 @@ pipeline {
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Checkout Code') {
             steps {
-                sh 'docker build -t cal-app .'
+                checkout scm
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy Application') {
             steps {
-                sh 'docker rm -f calculator-app || true'
-
-                sh 'docker run -itd --name calculator-app -p 8501:8501 cal-app'
+                sh 'chmod +x build.sh'
+                sh './build.sh'
             }
         }
     }
