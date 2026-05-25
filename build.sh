@@ -5,6 +5,7 @@ echo " Streamlit Calculator Deployment "
 echo "======================================="
 
 docker rm -f calculator-app || true
+docker rm -f calcultaor-streamlit || true
 
 docker rmi cal-app || true
 
